@@ -1,0 +1,67 @@
+#include<Servo.h>
+String voice;
+Servo elbo;
+Servo hand;
+Servo base;
+void leave(){
+  hand.write(0);
+}
+void back(){
+base.write(90);
+}
+void down(){
+elbo.write(35);
+}
+void turn(){
+base.write(180);
+}
+void catch1() {
+hand.write(180);
+}
+void pic() {
+elbo.write(0);
+}
+void setup() {
+Serial.begin(9600);
+ elbo.attach(3);
+  hand.attach(5);
+  base.attach(10);
+
+  base.write(90);
+  elbo.write(35);
+  hand.write(0);
+  
+}
+void loop() {
+while(Serial.available()) {
+delay(10);
+char c=Serial.read();
+if(c=='#')
+{break; }
+voice += c;
+}
+if (voice.length() > 0) {
+Serial.println(voice);
+if (voice == "catch" || voice == "all")
+{
+catch1() ;
+}
+else if (voice == "pic" || voice=="all off")
+{
+pic() ;
+}
+else if(voice =="turn" || voice =="red on"){
+turn();
+}
+else if(voice =="down"){
+down();
+}
+else if(voice =="leave" || voice =="green on"){
+leave();
+}
+else if(voice =="back"){
+  back();
+}
+voice="";
+}
+}
